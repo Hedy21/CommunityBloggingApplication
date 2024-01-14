@@ -24,7 +24,7 @@
                 <td>{{$d->view_count}}</td>
                 <td>
                     <a href="{{route('admin.article.edit',$d->slug)}}" class="btn btn-primary">Edit</a>
-                    <form action="{{route('admin.article.destroy',$d->slug)}}" class="d-inline" method="POST">
+                    <form action="{{route('admin.article.destroy',$d->id)}}" class="d-inline" method="POST">
                         @method('DELETE')
                         @csrf
                         <input type="submit" value="Delete" class="btn btn-danger">

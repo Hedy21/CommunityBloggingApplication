@@ -8,6 +8,7 @@ use App\Models\Programming;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 
 class ArticleController extends Controller
 {
@@ -101,7 +102,16 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        Programming::where('slug',$id)->delete();
-        return redirect()->back()->with('success','Deletion Success!');
+        $data = Article::find($id);
+        //file delete
+        File::delete(public_path('/images/'.$data->image));
+
+        //sync ထားတဲ့ tag နဲ့ programming remove
+        $data->tag()->sync([]);
+        $data->programming()->sync([]);
+
+        //article delete
+        $data->delete();
+        return redirect()->back()->with('success','Deleted');
     }
 }
