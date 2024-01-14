@@ -80,8 +80,10 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Programming::where('slug',$id)->first();
-        return view('admin.programming.edit',compact('data'));
+        $data = Article::where('id',$id)->with('tag','programming')->first();
+        $tag =  Tag::all();
+        $programming = Programming::all();
+        return view('admin.article.edit',compact('data','tag','programming'));
     }
 
     /**
@@ -89,12 +91,31 @@ class ArticleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $updatedSlug = Str::slug($request->name);
-        Programming::where('slug',$id)->update([
-            'slug' => Str::slug($request->name),
-            'name' => $request->name,
+        $data = Article::find($id);
+        //image
+        if($file = $request->file('image')){
+            File::delete(public_path('/images/'.$data->image));
+            //image upload
+            $file_name = uniqid().$file->getClientOriginalName();
+            $file->move(public_path('/images'),$file_name);
+        }else{
+            //image upload
+            $file_name = $data->image;
+        }
+
+        //article update
+        $data->update([
+            'slug'=>Str::slug($request->name),
+            'name'=>$request->name,
+            'image'=>$file_name,
+            'description' =>$request->description,
         ]);
-        return redirect()->route('admin.programming.edit',$updatedSlug)->with('success','Edition Success!');
+
+        //tag & programming sync
+        $data->tag()->sync($request->tag);
+        $data->programming()->sync($request->programming);
+        return redirect()->back()->with('success','Updated!');
+
     }
 
     /**

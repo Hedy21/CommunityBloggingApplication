@@ -23,7 +23,7 @@
                 <td>{{$d->like_count}}</td>
                 <td>{{$d->view_count}}</td>
                 <td>
-                    <a href="{{route('admin.article.edit',$d->slug)}}" class="btn btn-primary">Edit</a>
+                    <a href="{{route('admin.article.edit',$d->id)}}" class="btn btn-primary">Edit</a>
                     <form action="{{route('admin.article.destroy',$d->id)}}" class="d-inline" method="POST">
                         @method('DELETE')
                         @csrf
@@ -48,7 +48,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-            <img src="{{asset('/images/'.$d->image)}}" class="img-thumnail w-100 p-3">
+            <img src="{{asset('/images/'.$d->image)}}" class="img-thumbnail w-100 p-3">
             @foreach ($d->tag as $tag)
             <span class="badge bg-dark text-white">
                 {{$tag->name}}
