@@ -96,6 +96,8 @@
 
   {{-- jquery --}}
   <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+
+
   @yield('script')
 
   <script>

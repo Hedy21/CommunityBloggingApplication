@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,6 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','as'=>'admin.','middleware'
     Route::get('/','PageController@dashboard');
     Route::resource('/programming', 'ProgrammingController');
     Route::resource('/tag','TagController');
+    Route::resource('/article', 'ArticleController');
     Route::get('/logout','AuthController@logout');
 });
