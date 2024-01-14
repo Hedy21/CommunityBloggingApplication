@@ -30,7 +30,7 @@
                         <input type="submit" value="Delete" class="btn btn-danger">
                     </form>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#id{{$d->id}}">
                         View
                     </button>
                 </td>
@@ -44,7 +44,7 @@
 @section('script')
 @foreach ($data as $d)
     <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="id{{$d->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
