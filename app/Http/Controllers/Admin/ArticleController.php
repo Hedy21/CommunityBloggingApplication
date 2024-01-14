@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Tag;
 use App\Models\Article;
 use App\Models\Programming;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,8 +16,10 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $data = Programming::orderBy('id','desc')->paginate(2);
-        return view('admin.programming.index',compact('data'));
+        $data = Article::orderBy('id','desc')
+        ->with('tag','programming')
+        ->paginate(10);
+        return view('admin.article.index',compact('data'));
     }
 
     /**
@@ -35,6 +38,7 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+
             'name'=>'required',
             'description'=>'required',
             'image'=>'required|max:2048|image',
@@ -47,6 +51,7 @@ class ArticleController extends Controller
 
         //article store
         $createdArticle = Article::create([
+            'slug'=>Str::slug($request->name),
             'name'=>$request->name,
             'image'=>$file_name,
             'description' =>$request->description,
@@ -58,6 +63,7 @@ class ArticleController extends Controller
         $article = Article::find($createdArticle->id);
         $article->tag()->sync($request->tag);
         $article->programming()->sync($request->programming);
+        return redirect()->back()->with('success','Created');
     }
 
     /**
